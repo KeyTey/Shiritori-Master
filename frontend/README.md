@@ -1,24 +1,32 @@
-# frontend
+# しりとり最強さん
 
-## Project setup
+## Development
+
+#### ~/ShiritoriMaster/frontend
+
 ```
-npm install
+# Setup
+$ npm install
+
+# Compiles and hot-reloads for development
+$ npm run serve
+
+# Compiles and minifies for production
+$ npm run build
+
+# Lints and fixes files
+$ npm run lint
+
+# Watch for changes
+# npm run watch
 ```
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+#### ~/ShiritoriMaster/backend
 
-### Compiles and minifies for production
 ```
-npm run build
-```
+# Setup
+$ pip install -r requirements.txt
 
-### Lints and fixes files
+# Start server for development
+$ python3 main.py
 ```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).

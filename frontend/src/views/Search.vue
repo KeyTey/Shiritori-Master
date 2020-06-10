@@ -2,19 +2,17 @@
   <div class="search">
     <div class="fadein">
       <div class="main">
-        <div class="input-group" v-if="formState.format === separated">
-          <SettingButton />
-          <input type="text" class="form-control w-25" v-model="formState.initial" @input="onChangeText" placeholder="頭文字">
-          <input type="text" class="form-control w-25" v-model="formState.length" @input="onChangeText" placeholder="文字数">
-        </div>
-        <div class="input-group" v-if="formState.format === composite">
-          <SettingButton />
-          <input type="text" class="form-control w-50" v-model="formState.text" @input="onChangeText" placeholder="頭文字 + 文字数">
-        </div>
+        <SearchForm v-if="formState.format === separated">
+          <input type="text" id="first-input" class="form-control w-25" v-model="formState.initial" @input="onChangeText" placeholder="頭文字">
+          <input type="text" id="second-input" class="form-control w-25" v-model="formState.length" @input="onChangeText" placeholder="文字数">
+        </SearchForm>
+        <SearchForm v-if="formState.format === composite">
+          <input type="text" id="first-input" class="form-control w-50" v-model="formState.text" @input="onChangeText" placeholder="頭文字 + 文字数">
+        </SearchForm>
         <div class="results">
           <div v-for="(result, i) in results" class="card p-0" :key="i">
             <div class="card-header">
-              <input type="text" class="form-control" v-model="result.key" placeholder="語尾" maxlength="1">
+              <input type="text" class="form-control" v-model="result.key" @input="onChangeKey(i)" placeholder="語尾" maxlength="1">
             </div>
             <ul class="list-group">
               <li v-for="(word, i) in result.words" class="list-group-item" :key="i">
@@ -31,8 +29,9 @@
 
 <script>
 import { mapState } from 'vuex'
-import SettingButton from '@/components/SettingButton.vue'
+import SearchForm from '@/components/SearchForm.vue'
 import SettingModal from '@/components/SettingModal.vue'
+const axios = require('axios').create()
 
 export default {
   name: 'Search',
@@ -45,8 +44,8 @@ export default {
   methods: {
     isValidSeparatedText (initial, length) {
       const vowel = /^[aiueo]$/
-      const consonant = /^[kgsztdnhbpmyrw][aiueo]$/
-      const hiragana = /^[ぁ-ん]$/
+      const consonant = /^[kstnhmyrwgzjdhbv][aiueo]$/
+      const hiragana = /^[ぁ-んゔ]$/
       const halfNumeral = /^[1-9][0-9]*$/
       const fullNumeral = /^[１-９][０-９]*$/
       if (vowel.test(initial) || consonant.test(initial) || hiragana.test(initial)) {
@@ -78,8 +77,24 @@ export default {
         }
       })()
       if (this.isValidSeparatedText(initial, length)) {
-        // TODO: リクエスト送信
+        axios.get('/api/search', {
+          params: {
+            initial: initial,
+            length: length
+          }
+        })
+          .then(res => {
+            this.$store.commit('setWords', res.data)
+            this.results.forEach((_, i) => this.$store.commit('setResult', i))
+          })
+          .catch(e => console.error(e))
+      } else {
+        this.$store.commit('setWords', [])
+        this.results.forEach((_, i) => this.$store.commit('setResult', i))
       }
+    },
+    onChangeKey (idx) {
+      this.$store.commit('setResult', idx)
     }
   },
   computed: {
@@ -89,11 +104,11 @@ export default {
     })
   },
   created: function () {
-    this.$store.commit('setFormState', 'separated')
+    this.$store.commit('setFormState', this.separated)
     this.$store.commit('setResultSize', 3)
   },
   components: {
-    SettingButton,
+    SearchForm,
     SettingModal
   }
 }
