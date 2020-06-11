@@ -1,6 +1,6 @@
 from flask import Blueprint, request, abort
 from flask_restful import Api, Resource
-import re, random
+import re
 
 api_blueprint = Blueprint('api', __name__, url_prefix = '/api')
 
@@ -50,7 +50,7 @@ converter = {
     'ro': 'ろ',
     'wa': 'わ',
     'wo': 'を',
-    'nn': 'ん',
+    'n': 'ん',
     'ga': 'が',
     'gi': 'ぎ',
     'gu': 'ぐ',
@@ -94,7 +94,6 @@ class Search(Resource):
         if not re.match('^[ぁ-んゔ]$', initial):
             abort(400)
         searched_words = [word for word in words if word[0] == initial and len(word) == length]
-        random.shuffle(searched_words)
         return searched_words
 
 api = Api(api_blueprint)

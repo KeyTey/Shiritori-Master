@@ -3,7 +3,7 @@
     <div class="fadein">
       <img alt="ロゴ" src="../assets/logo.png">
       <h1>しりとり最強さん</h1>
-      <p>単語を検索することができるサービスです</p>
+      <p>0.1秒で単語を検索することができるサービスです</p>
       <router-link to="/search">検索する</router-link>
       </div>
   </div>

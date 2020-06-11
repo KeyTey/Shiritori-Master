@@ -3,16 +3,16 @@
     <div class="fadein">
       <div class="main">
         <SearchForm v-if="formState.format === separated">
-          <input type="text" id="first-input" class="form-control w-25" v-model="formState.initial" @input="onChangeText" placeholder="頭文字">
-          <input type="text" id="second-input" class="form-control w-25" v-model="formState.length" @input="onChangeText" placeholder="文字数">
+          <input type="text" placeholder="頭文字" id="first-input" class="form-control w-25" v-model="formState.initial" @input="onChangeText" @keydown.enter="clearText">
+          <input type="text" placeholder="文字数" id="second-input" class="form-control w-25" v-model="formState.length" @input="onChangeText" @keydown.enter="clearText">
         </SearchForm>
         <SearchForm v-if="formState.format === composite">
-          <input type="text" id="first-input" class="form-control w-50" v-model="formState.text" @input="onChangeText" placeholder="頭文字 + 文字数">
+          <input type="text" placeholder="頭文字 + 文字数" id="first-input" class="form-control w-50" v-model="formState.text" @input="onChangeText" @keydown.enter="clearText">
         </SearchForm>
         <div class="results">
           <div v-for="(result, i) in results" class="card p-0" :key="i">
             <div class="card-header">
-              <input type="text" class="form-control" v-model="result.key" @input="onChangeKey(i)" placeholder="語尾" maxlength="1">
+              <input type="text" class="form-control" v-model="result.tail" @input="onChangeTail(i)" placeholder="語尾" maxlength="1">
             </div>
             <ul class="list-group">
               <li v-for="(word, i) in result.words" class="list-group-item" :key="i">
@@ -43,8 +43,8 @@ export default {
   },
   methods: {
     isValidSeparatedText (initial, length) {
-      const vowel = /^[aiueo]$/
-      const consonant = /^[kstnhmyrwgzjdhbv][aiueo]$/
+      const vowel = /^[aiueon]$/
+      const consonant = /^[kstnhmyrwgzjdhpbv][aiueo]$/
       const hiragana = /^[ぁ-んゔ]$/
       const halfNumeral = /^[1-9][0-9]*$/
       const fullNumeral = /^[１-９][０-９]*$/
@@ -93,19 +93,33 @@ export default {
         this.results.forEach((_, i) => this.$store.commit('setResult', i))
       }
     },
-    onChangeKey (idx) {
+    onChangeTail (idx) {
       this.$store.commit('setResult', idx)
+    },
+    clearText () {
+      if (this.enterAction !== 'clear') return
+      switch (this.formState.format) {
+        case this.separated:
+          this.formState.initial = ''
+          this.formState.length = ''
+          break
+        case this.composite:
+          this.formState.text = ''
+          break
+        default:
+          break
+      }
+      document.getElementById('first-input').focus()
+      this.$store.commit('setWords', [])
+      this.results.forEach((_, i) => this.$store.commit('setResult', i))
     }
   },
   computed: {
     ...mapState({
       formState: state => state.formState,
+      enterAction: state => state.option.enterAction,
       results: state => state.results
     })
-  },
-  created: function () {
-    this.$store.commit('setFormState', this.separated)
-    this.$store.commit('setResultSize', 3)
   },
   components: {
     SearchForm,

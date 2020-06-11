@@ -1,7 +1,7 @@
 <template>
   <div class="input-group">
     <div class="input-group-prepend">
-      <button type="button" class="btn btn-outline-secondary" @click="$store.commit('toggleSettingModal', 'setting')">
+      <button type="button" class="btn btn-outline-secondary" @click="$store.commit('toggleModal', 'setting')">
         <i class="fas fa-cog"></i>
       </button>
     </div>
@@ -37,11 +37,14 @@ export default {
           break
       }
       document.getElementById('first-input').focus()
+      this.$store.commit('setWords', [])
+      this.results.forEach((_, i) => this.$store.commit('setResult', i))
     }
   },
   computed: {
     ...mapState({
-      formState: state => state.formState
+      formState: state => state.formState,
+      results: state => state.results
     })
   }
 }
