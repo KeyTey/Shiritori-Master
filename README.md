@@ -1,8 +1,10 @@
 # しりとり最強さん
 
+https://shiritori-master.herokuapp.com
+
 ## Development
 
-#### ~/ShiritoriMaster/frontend
+#### ~/Shiritori-Master/frontend
 
 ```
 # Setup
@@ -21,11 +23,11 @@ $ npm run lint
 # npm run watch
 ```
 
-#### ~/ShiritoriMaster/backend
+#### ~/Shiritori-Master/backend
 
 ```
 # Setup
-$ pip install -r requirements.txt
+$ pip install -r ../requirements.txt
 
 # Start server for development
 $ python3 main.py
