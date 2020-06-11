@@ -60,13 +60,17 @@ import { mapState } from 'vuex'
 import Modal from '@/components/Modal.vue'
 import SettingItem from '@/components/SettingItem.vue'
 
+function isSmartPhone () {
+  return window.matchMedia('(max-device-width: 480px)').matches
+}
+
 export default {
   name: 'SettingModal',
   data () {
     return {
       format: '',
       size: 0,
-      maxSize: 6,
+      maxSize: isSmartPhone() ? 3 : 6,
       wordKind: '',
       enterAction: ''
     }
@@ -112,5 +116,11 @@ export default {
 .setting {
   max-width: 400px;
   margin: 0 auto;
+}
+</style>
+
+<style scoped>
+.custom-select {
+  width: auto;
 }
 </style>

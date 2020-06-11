@@ -17,6 +17,10 @@ function getDefaultFormState (format) {
   }
 }
 
+function isSmartPhone () {
+  return window.matchMedia('(max-device-width: 480px)').matches
+}
+
 function getTransformedResults (results, size) {
   const emptyResults = Array(size).fill().map(() => ({ tail: '', words: [] }))
   return results.concat(emptyResults).slice(0, size)
@@ -37,7 +41,7 @@ export default new Vuex.Store({
   state: {
     words: [],
     formState: getDefaultFormState(separated),
-    results: getTransformedResults([], 3),
+    results: getTransformedResults([], isSmartPhone() ? 1 : 3),
     option: { enterAction: 'default', wordKind: 'default' },
     modalState: { setting: false }
   },

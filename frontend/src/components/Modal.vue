@@ -36,4 +36,9 @@ export default {
 .modal-dialog {
   margin-top: 140px;
 }
+@media screen and (max-width: 480px) {
+  .modal-dialog {
+    margin-top: 60px;
+  }
+}
 </style>

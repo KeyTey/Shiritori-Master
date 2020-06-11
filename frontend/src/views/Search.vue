@@ -141,6 +141,7 @@ export default {
 .results {
   display: flex;
   justify-content: center;
+  margin: 0 20px;
 }
 .card {
   width: 100%;
