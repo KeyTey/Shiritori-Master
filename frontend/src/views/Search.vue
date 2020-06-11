@@ -87,7 +87,7 @@ export default {
             this.$store.commit('setWords', res.data)
             this.results.forEach((_, i) => this.$store.commit('setResult', i))
           })
-          .catch(e => console.error(e))
+          .catch(() => {})
       } else {
         this.$store.commit('setWords', [])
         this.results.forEach((_, i) => this.$store.commit('setResult', i))
