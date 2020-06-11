@@ -4,7 +4,7 @@
       <img class="logo" alt="ロゴ" src="../assets/logo.png">
       <h1 class="title">しりとり最強さん</h1>
       <p class="description">0.1秒で単語を検索することができるサービスです</p>
-      <div>
+      <div class="link">
         <router-link class="circle" to="/search"></router-link>
         <span class="circle decorate">検索する</span>
       </div>
@@ -35,6 +35,10 @@ export default {
 .description {
   font-size: 1.25rem;
   margin-bottom: 60px;
+}
+.link {
+  height: 180px;
+  margin-bottom: 40px;
 }
 .circle {
   position: absolute;
