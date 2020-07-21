@@ -1,6 +1,6 @@
 .DS_Store
 node_modules
-Python
+virtualenv
 
 # local env files
 .env.local
